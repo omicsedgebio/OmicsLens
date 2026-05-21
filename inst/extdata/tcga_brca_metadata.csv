@@ -1,0 +1,16 @@
+sample_id,barcode,tissue,PAM50,time_os,event,age_at_dx,ER_status,PR_status,HER2_status,source
+TCGA-A2-A0T2,TCGA-A2-A0T2-01A,Tumour,LumA,72.3,0,52,Positive,Positive,Negative,TCGA-BRCA
+TCGA-A2-A0CM,TCGA-A2-A0CM-01A,Tumour,LumB,48.1,0,60,Positive,Positive,Negative,TCGA-BRCA
+TCGA-A2-A0D0,TCGA-A2-A0D0-01A,Tumour,Basal,23.4,1,45,Negative,Negative,Negative,TCGA-BRCA
+TCGA-A2-A0EQ,TCGA-A2-A0EQ-01A,Tumour,LumA,84.7,0,55,Positive,Positive,Negative,TCGA-BRCA
+TCGA-A2-A0EV,TCGA-A2-A0EV-01A,Tumour,Her2,18.9,1,48,Negative,Negative,Positive,TCGA-BRCA
+TCGA-A2-A0EX,TCGA-A2-A0EX-01A,Tumour,LumA,90.2,0,63,Positive,Positive,Negative,TCGA-BRCA
+TCGA-A2-A0T6,TCGA-A2-A0T6-01A,Tumour,Basal,31.2,1,41,Negative,Negative,Negative,TCGA-BRCA
+TCGA-A2-A0YF,TCGA-A2-A0YF-01A,Tumour,LumB,57.8,0,58,Positive,Negative,Negative,TCGA-BRCA
+TCGA-A2-A0YG,TCGA-A2-A0YG-01A,Tumour,Normal,45.1,0,50,Positive,Positive,Negative,TCGA-BRCA
+TCGA-A2-A0YI,TCGA-A2-A0YI-01A,Tumour,LumA,67.4,0,56,Positive,Positive,Negative,TCGA-BRCA
+TCGA-A2-A0T2-N,TCGA-A2-A0T2-11A,Normal,NA,72.3,0,52,NA,NA,NA,TCGA-BRCA
+TCGA-A2-A0CM-N,TCGA-A2-A0CM-11A,Normal,NA,48.1,0,60,NA,NA,NA,TCGA-BRCA
+TCGA-A2-A0D0-N,TCGA-A2-A0D0-11A,Normal,NA,23.4,0,45,NA,NA,NA,TCGA-BRCA
+TCGA-A2-A0EQ-N,TCGA-A2-A0EQ-11A,Normal,NA,84.7,0,55,NA,NA,NA,TCGA-BRCA
+TCGA-A2-A0EV-N,TCGA-A2-A0EV-11A,Normal,NA,18.9,0,48,NA,NA,NA,TCGA-BRCA

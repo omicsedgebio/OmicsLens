@@ -1,0 +1,20 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+inst/doc
+/doc/
+/Meta/
+/tmp/
+*.o
+*.so
+*.dll
+vignettes/*.html
+vignettes/*.pdf
+
+# Large data files — stored externally, not in git
+data-raw/results/*.rds
+data-raw/results/*.html
+data-raw/results/*.pdf
+.DS_Store

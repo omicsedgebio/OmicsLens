@@ -1,0 +1,158 @@
+# OmicsLens <img src="https://img.icons8.com/fluency/48/lens.png" align="right" width="80"/>
+
+> **Multi-omics integration and visualization for translational research**
+
+[![R-CMD-check](https://github.com/priyanshpathak/OmicsLens/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/priyanshpathak/OmicsLens/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.md)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.placeholder.svg)](https://doi.org/10.5281/zenodo.placeholder)
+
+---
+
+OmicsLens is an R package that combines **RNA-Seq**, **whole-genome
+sequencing (WGS)**, and **DNA methylation** data into a single
+interpretable analysis. The core engine is
+[MOFA2](https://biofam.github.io/MOFA2/) latent factor analysis; the
+results are explored through an interactive **Shiny dashboard** and
+exported as a reproducible **HTML report**.
+
+No bioinformatics PhD required.
+
+---
+
+## Why OmicsLens?
+
+| Feature | MOFA2 alone | DESeq2 alone | **OmicsLens** |
+|---|---|---|---|
+| Combines RNA + WGS + Methylation | ✅ | ❌ | ✅ |
+| Accessible 5-function API | ❌ | N/A | ✅ |
+| Built-in DE, GSEA, DMR, survival | ❌ | Partial | ✅ |
+| Interactive Shiny dashboard | ❌ | ❌ | ✅ |
+| One-click HTML report | ❌ | ❌ | ✅ |
+
+---
+
+## Installation
+
+```r
+# 1. Install Bioconductor dependencies
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install(c("MOFA2", "DESeq2", "fgsea", "DMRcate"))
+
+# 2. Install OmicsLens from GitHub
+# install.packages("devtools")
+devtools::install_github("priyanshpathak/OmicsLens")
+```
+
+---
+
+## Quick start
+
+```r
+library(OmicsLens)
+
+# 1. Load data (file paths or in-memory matrices)
+obj <- omicslens_load(
+  rna_counts  = "counts_matrix.csv",   # genes × samples
+  variants    = "mutations.maf",        # MAF or binary matrix
+  methylation = "beta_matrix.csv",      # CpGs × samples
+  metadata    = "sample_info.csv"       # must contain 'sample_id' column
+)
+
+# 2. Preprocess each layer
+obj <- omicslens_preprocess(obj)
+
+# 3. Multi-omics factor analysis (MOFA2)
+obj <- omicslens_integrate(obj, n_factors = 10)
+
+# 4. Downstream analyses
+obj <- omicslens_analyze(
+  obj,
+  survival_time_col  = "time_os",
+  survival_event_col = "event"
+)
+
+# 5. Explore results interactively
+omicslens_app(obj)
+
+# 6. Export a reproducible HTML report
+omicslens_report(obj, output_file = "my_report.html",
+                  title = "TCGA-BRCA Multi-Omics",
+                  author = "Your Name")
+```
+
+---
+
+## Input formats
+
+| Layer | Accepted formats |
+|---|---|
+| RNA-Seq | CSV / TSV / RDS — raw integer count matrix (genes × samples) |
+| Variants | MAF file (`.maf`) or binary CSV/TSV (samples × genes, 0/1 values) |
+| Methylation | CSV / TSV / RDS — Illumina 450k/EPIC beta matrix (CpGs × samples) |
+| Metadata | CSV with a `sample_id` column; add `time_os` + `event` for survival |
+
+---
+
+## The OmicsLens pipeline
+
+```
+omicslens_load()
+  └─ reads files / matrices, aligns sample IDs, returns OmicsLens S3 object
+
+omicslens_preprocess()
+  ├─ RNA    : DESeq2 VST normalisation
+  ├─ WGS    : MAF-frequency filtering
+  └─ Methyl : beta→M-value, top-N variable CpGs
+
+omicslens_integrate()
+  └─ MOFA2 latent factor analysis (Gaussian + Bernoulli likelihoods)
+
+omicslens_analyze()
+  ├─ DESeq2     : differential expression (factor High vs Low)
+  ├─ fgsea      : hallmark pathway enrichment
+  ├─ DMRcate    : differentially methylated regions
+  └─ survival   : Kaplan-Meier + Cox regression
+
+omicslens_app()        → Shiny dashboard (7 tabs, plotly, DT, downloads)
+omicslens_report()     → parameterised R Markdown HTML report
+```
+
+---
+
+## Shiny dashboard tabs
+
+1. **Overview** — data dimensions, PCA of RNA-Seq layer  
+2. **MOFA2 Factors** — variance explained, factor scatter, top weights  
+3. **Differential Expression** — volcano plot, heatmap, sortable table  
+4. **Pathway Enrichment** — GSEA dot plot, results table  
+5. **Methylation / DMR** — DMR table with genomic coordinates  
+6. **Survival** — Kaplan-Meier curves with risk table, Cox summary  
+7. **Export** — download CSVs for every result; generate HTML report  
+
+---
+
+## Citation
+
+If you use OmicsLens in your research, please cite:
+
+> Pathak, P. (2026). *OmicsLens: Multi-Omics Integration Pipeline with
+> Interactive Visualization.* Zenodo. https://doi.org/10.5281/zenodo.placeholder
+
+Please also cite MOFA2:
+
+> Argelaguet R et al. (2020). MOFA+: a statistical framework for
+> comprehensive integration of multi-modal single-cell data. *Genome Biology*, 21:111.
+
+---
+
+## Contributing
+
+Issues and pull requests are welcome at
+<https://github.com/priyanshpathak/OmicsLens/issues>.
+
+---
+
+## License
+
+MIT © 2026 Priyansh Pathak

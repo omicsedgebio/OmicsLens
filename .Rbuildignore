@@ -1,0 +1,9 @@
+^\.gitignore$
+^\.github$
+^README\.Rmd$
+^data-raw$
+^\.zenodo\.json$
+^codemeta\.json$
+^.*\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$

@@ -1,0 +1,9 @@
+SRR_accession	GSM_accession	GEO_series	cell_line	treatment	condition	reads_M	layout	instrument	reference
+SRR1039508	GSM1275862	GSE52778	N61311	Untreated	control	31.3	PAIRED	Illumina HiSeq 2000	Himes et al. 2014 PLoS ONE
+SRR1039509	GSM1275863	GSE52778	N61311	Dexamethasone_1uM	treated	33.7	PAIRED	Illumina HiSeq 2000	Himes et al. 2014 PLoS ONE
+SRR1039512	GSM1275866	GSE52778	N052611	Untreated	control	28.9	PAIRED	Illumina HiSeq 2000	Himes et al. 2014 PLoS ONE
+SRR1039513	GSM1275867	GSE52778	N052611	Dexamethasone_1uM	treated	35.8	PAIRED	Illumina HiSeq 2000	Himes et al. 2014 PLoS ONE
+SRR1039516	GSM1275870	GSE52778	N080611	Untreated	control	22.1	PAIRED	Illumina HiSeq 2000	Himes et al. 2014 PLoS ONE
+SRR1039517	GSM1275871	GSE52778	N080611	Dexamethasone_1uM	treated	25.4	PAIRED	Illumina HiSeq 2000	Himes et al. 2014 PLoS ONE
+SRR1039520	GSM1275874	GSE52778	N061011	Untreated	control	30.2	PAIRED	Illumina HiSeq 2000	Himes et al. 2014 PLoS ONE
+SRR1039521	GSM1275875	GSE52778	N061011	Dexamethasone_1uM	treated	29.7	PAIRED	Illumina HiSeq 2000	Himes et al. 2014 PLoS ONE

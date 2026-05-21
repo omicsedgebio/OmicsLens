@@ -1,0 +1,66 @@
+Package: OmicsLens
+Type: Package
+Title: Multi-Omics Integration Pipeline with Interactive Visualization
+Version: 0.1.0
+Date: 2026-05-20
+Authors@R: person("Priyansh", "Pathak",
+    email = "priyanshpt84@gmail.com",
+    role  = c("aut", "cre"),
+    comment = c(ORCID = "0000-0000-0000-0000"))
+Description: An end-to-end multi-omics integration pipeline that combines
+    RNA-Seq, whole-genome sequencing (WGS), and DNA methylation data through
+    MOFA2 latent factor analysis. OmicsLens provides an accessible interface
+    for wet-lab scientists to perform multi-omics integration, differential
+    expression analysis, gene set enrichment analysis (GSEA), differentially
+    methylated region (DMR) calling, and survival analysis. Results are
+    explored through an interactive Shiny dashboard and exported as
+    reproducible HTML reports. Unlike existing tools, OmicsLens wraps the
+    full MOFA2 workflow behind a single five-function API designed for
+    non-computational biologists.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: false
+RoxygenNote: 7.3.2
+Depends:
+    R (>= 4.2.0)
+Imports:
+    MOFA2,
+    DESeq2,
+    SummarizedExperiment,
+    BiocParallel,
+    fgsea,
+    survival,
+    ggplot2 (>= 3.4.0),
+    dplyr (>= 1.1.0),
+    tidyr (>= 1.3.0),
+    shiny (>= 1.7.0),
+    shinydashboard (>= 0.7.0),
+    plotly (>= 4.10.0),
+    DT (>= 0.27),
+    rmarkdown (>= 2.20),
+    reshape2,
+    pheatmap,
+    methods,
+    stats,
+    utils,
+    grDevices,
+    tools
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    BiocStyle,
+    DMRcate,
+    limma,
+    airway,
+    TCGAbiolinks,
+    msigdbr,
+    org.Hs.eg.db,
+    maftools,
+    survminer
+biocViews: MultipleComparison, RNASeq, Methylation, Sequencing,
+    GeneExpression, DifferentialExpression, Survival, Visualization,
+    ShinyApps, WorkflowStep, ImmunoOncology
+VignetteBuilder: knitr
+BugReports: https://github.com/omicsedgebio/OmicsLens/issues
+URL: https://github.com/omicsedgebio/OmicsLens
+Config/testthat/edition: 3

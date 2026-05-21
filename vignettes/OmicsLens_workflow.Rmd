@@ -1,0 +1,268 @@
+---
+title: "OmicsLens: End-to-End Multi-Omics Integration Workflow"
+author: "Priyansh Pathak"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{OmicsLens workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment  = "#>",
+  fig.width = 8, fig.height = 5,
+  message  = FALSE, warning = FALSE
+)
+```
+
+# Introduction
+
+**OmicsLens** provides a five-function pipeline for integrating RNA-Seq, whole-
+genome sequencing (WGS), and DNA methylation data.
+The core engine is **MOFA2** (Multi-Omics Factor Analysis v2), which learns
+shared latent factors across all three data types. Downstream analyses —
+differential expression, gene set enrichment, DMR calling, and survival — are
+all driven by those factors, giving results that reflect the *joint* biology
+rather than layer-by-layer snapshots.
+
+```
+omicslens_load()         ── read + align
+       ↓
+omicslens_preprocess()   ── normalise + filter
+       ↓
+omicslens_integrate()    ── MOFA2 latent factors
+       ↓
+omicslens_analyze()      ── DE · GSEA · DMR · survival
+       ↓
+omicslens_app()          ── Shiny dashboard
+omicslens_report()       ── HTML report
+```
+
+# Installation
+
+```r
+# Install Bioconductor dependencies first
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install(c("MOFA2", "DESeq2", "fgsea", "DMRcate"))
+
+# Install OmicsLens from GitHub
+# install.packages("devtools")
+devtools::install_github("priyanshpathak/OmicsLens")
+```
+
+# Step 1 — Load data
+
+`omicslens_load()` accepts file paths (CSV / TSV / RDS) or in-memory R objects.
+Only one layer is required; the others can be added later.
+
+```{r load-data}
+library(OmicsLens)
+set.seed(42)
+
+# ── Simulate three data layers ────────────────────────────────────────────────
+n_samples <- 40L
+n_genes   <- 500L
+n_cpgs    <- 2000L
+n_mut     <- 150L
+
+sample_ids <- paste0("Sample_", seq_len(n_samples))
+
+rna_counts <- matrix(
+  rpois(n_genes * n_samples, lambda = 80),
+  nrow     = n_genes,
+  dimnames = list(paste0("Gene",  seq_len(n_genes)),  sample_ids)
+)
+
+meth_beta <- matrix(
+  rbeta(n_cpgs * n_samples, 2, 5),
+  nrow     = n_cpgs,
+  dimnames = list(paste0("cg", seq_len(n_cpgs)), sample_ids)
+)
+
+var_binary <- matrix(
+  rbinom(n_samples * n_mut, 1, 0.08),
+  nrow     = n_samples,
+  dimnames = list(sample_ids, paste0("MutGene", seq_len(n_mut)))
+)
+
+metadata <- data.frame(
+  sample_id = sample_ids,
+  condition = rep(c("Tumour", "Normal"), n_samples / 2),
+  time_os   = runif(n_samples, 6, 60),
+  event     = rbinom(n_samples, 1, 0.5),
+  row.names = sample_ids,
+  stringsAsFactors = FALSE
+)
+
+# ── Load ──────────────────────────────────────────────────────────────────────
+obj <- omicslens_load(
+  rna_counts  = rna_counts,
+  methylation = meth_beta,
+  variants    = var_binary,
+  metadata    = metadata,
+  variant_format = "binary_matrix"
+)
+print(obj)
+```
+
+# Step 2 — Preprocess
+
+Each layer is normalised independently:
+
+| Layer       | Method                                               |
+|-------------|------------------------------------------------------|
+| RNA-Seq     | Low-count gene removal → DESeq2 VST normalisation   |
+| Variants    | Filter genes by mutation allele frequency            |
+| Methylation | NA filtering → beta→M-value conversion → top-N CpGs |
+
+```{r preprocess}
+obj <- omicslens_preprocess(
+  obj,
+  rna_min_counts   = 10,
+  variant_min_maf  = 0.05,
+  meth_var_top_n   = 1000
+)
+```
+
+# Step 3 — MOFA2 Integration
+
+```{r integrate, eval=FALSE}
+# Requires Python + mofapy2 (managed via basilisk automatically)
+obj <- omicslens_integrate(obj, n_factors = 10, seed = 42)
+```
+
+```{r integrate-fake, echo=FALSE}
+# Synthetic factor scores for illustration (skips Python requirement in vignette)
+set.seed(42)
+factors_mat <- matrix(rnorm(n_samples * 10), nrow = n_samples,
+                       dimnames = list(sample_ids, paste0("Factor", 1:10)))
+obj$results$mofa <- list(
+  factors = factors_mat,
+  weights = lapply(c("RNA","Variants","Methylation"), function(v) {
+    list(matrix(rnorm(n_genes * 10), n_genes, 10,
+                 dimnames = list(paste0("Gene", seq_len(n_genes)),
+                                 paste0("Factor", 1:10))))
+  }) |> setNames(c("RNA","Variants","Methylation")),
+  variance_explained = list(
+    r2_per_factor = list(
+      data.frame(RNA = runif(10, 0, 0.1),
+                 Variants = runif(10, 0, 0.05),
+                 Methylation = runif(10, 0, 0.08))
+    )
+  )
+)
+# Fake MOFA model indicator
+obj$mofa_model <- TRUE
+```
+
+After integration, factor scores and weights per view are available:
+
+```{r factor-head}
+head(obj$results$mofa$factors[, 1:4])
+```
+
+## Plot: factor scatter
+
+```{r plot-factors}
+omicslens_plot_factors(obj, factor_x = 1, factor_y = 2)
+```
+
+# Step 4 — Downstream Analysis
+
+```{r analyze, eval=FALSE}
+obj <- omicslens_analyze(
+  obj,
+  run_de             = TRUE,
+  run_gsea           = TRUE,
+  run_dmr            = TRUE,
+  run_survival       = TRUE,
+  survival_time_col  = "time_os",
+  survival_event_col = "event"
+)
+```
+
+```{r analyze-fake, echo=FALSE}
+# Synthetic DE results for illustration
+set.seed(1)
+n_de <- nrow(rna_counts)
+de_df <- data.frame(
+  gene           = rownames(rna_counts),
+  baseMean       = abs(rnorm(n_de, 100, 50)),
+  log2FoldChange = rnorm(n_de),
+  lfcSE          = abs(rnorm(n_de, 0.3, 0.1)),
+  stat           = rnorm(n_de),
+  pvalue         = runif(n_de),
+  padj           = p.adjust(runif(n_de), method = "BH"),
+  stringsAsFactors = FALSE
+)
+de_df <- de_df[order(de_df$padj), ]
+obj$results$de <- de_df
+
+# Synthetic GSEA results
+obj$results$gsea <- data.frame(
+  pathway = c("HALLMARK_E2F_TARGETS","HALLMARK_MYC_TARGETS_V1",
+              "HALLMARK_INFLAMMATORY","HALLMARK_APOPTOSIS"),
+  NES     = c(2.1, 1.8, -1.6, -2.0),
+  pval    = c(0.001, 0.01, 0.02, 0.005),
+  padj    = c(0.005, 0.04, 0.08, 0.02),
+  size    = c(200, 150, 180, 120),
+  stringsAsFactors = FALSE
+)
+
+# Groups
+groups <- ifelse(factors_mat[, 1] >= median(factors_mat[, 1]), "High", "Low")
+names(groups) <- sample_ids
+obj$results$groups <- groups
+```
+
+## Volcano plot
+
+```{r volcano}
+omicslens_plot_de(obj, padj_cutoff = 0.05, lfc_cutoff = 1)
+```
+
+## GSEA dot plot
+
+```{r gsea}
+omicslens_plot_gsea(obj)
+```
+
+## Survival
+
+```{r survival, eval=FALSE}
+omicslens_plot_survival(obj)
+```
+
+# Step 5 — Shiny Dashboard
+
+```{r shiny, eval=FALSE}
+omicslens_app(obj)
+```
+
+The dashboard provides seven tabs covering every analysis result, with
+interactive plotly charts, DT tables, and download buttons.
+
+# Step 6 — HTML Report
+
+```{r report, eval=FALSE}
+omicslens_report(
+  obj,
+  output_file = "my_analysis.html",
+  title       = "TCGA-BRCA Multi-Omics",
+  author      = "Priyansh Pathak"
+)
+```
+
+# Session Info
+
+```{r session}
+sessionInfo()
+```

@@ -1,0 +1,280 @@
+---
+title: "`r params$title`"
+author: "`r params$author`"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    theme: flatly
+    highlight: tango
+    code_folding: hide
+    df_print: paged
+params:
+  obj_path: ""
+  title: "OmicsLens Analysis Report"
+  author: ""
+  pkg_root: ""
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo       = FALSE,
+  warning    = FALSE,
+  message    = FALSE,
+  fig.width  = 9,
+  fig.height = 6,
+  out.width  = "100%"
+)
+
+# Load OmicsLens: installed package first, fall back to source files
+if (requireNamespace("OmicsLens", quietly = TRUE)) {
+  library(OmicsLens)
+} else if (nzchar(params$pkg_root) && dir.exists(params$pkg_root)) {
+  for (f in list.files(file.path(params$pkg_root, "R"), pattern = "\\.R$", full.names = TRUE))
+    source(f)
+} else {
+  stop("OmicsLens not installed and pkg_root not provided. Install with devtools::install_github('priyanshpathak/OmicsLens')")
+}
+
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(DT)
+  library(plotly)
+  library(survival)
+  library(pheatmap)
+})
+
+obj <- readRDS(params$obj_path)
+has_mofa     <- !is.null(obj$results$mofa)
+has_de       <- !is.null(obj$results$de)
+has_gsea     <- !is.null(obj$results$gsea)
+has_dmr      <- !is.null(obj$results$dmr)
+has_survival <- !is.null(obj$results$survival)
+```
+
+```{r logo-banner, results='asis', echo=FALSE}
+cat('
+<style>
+.omicslens-header {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #1a6496 0%, #2c3e50 100%);
+  border-radius: 8px;
+  padding: 18px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+.omicslens-header img {
+  width: 52px;
+  height: 52px;
+  margin-right: 18px;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4));
+}
+.omicslens-header-text h1 {
+  margin: 0 0 2px 0;
+  font-size: 1.9em;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+.omicslens-header-text p {
+  margin: 0;
+  font-size: 0.92em;
+  color: #aed6f1;
+}
+</style>
+<div class="omicslens-header">
+  <img src="https://img.icons8.com/fluency/96/lens.png" alt="OmicsLens logo"/>
+  <div class="omicslens-header-text">
+    <h1>OmicsLens</h1>
+    <p>Multi-omics integration &nbsp;&bull;&nbsp; MOFA2 &nbsp;&bull;&nbsp; DESeq2 &nbsp;&bull;&nbsp; fgsea &nbsp;&bull;&nbsp; Survival &nbsp;&bull;&nbsp; Analysis date: ',
+    format(Sys.Date(), "%B %d, %Y"), '</p>
+  </div>
+</div>
+')
+```
+
+---
+
+# 1. Data Overview
+
+```{r overview}
+rows <- list()
+if ("rna" %in% obj$layers_present)
+  rows[[length(rows)+1]] <- data.frame(
+    Layer = "RNA-Seq", Features = nrow(obj$rna$counts), Samples = ncol(obj$rna$counts))
+if ("variants" %in% obj$layers_present)
+  rows[[length(rows)+1]] <- data.frame(
+    Layer = "Variants (WGS)", Features = ncol(obj$variants$binary),
+    Samples = nrow(obj$variants$binary))
+if ("methylation" %in% obj$layers_present)
+  rows[[length(rows)+1]] <- data.frame(
+    Layer = "Methylation", Features = nrow(obj$methylation$beta),
+    Samples = ncol(obj$methylation$beta))
+knitr::kable(do.call(rbind, rows), caption = "Data layers loaded into OmicsLens")
+```
+
+```{r pca, eval="rna" %in% obj$layers_present && !is.null(obj$rna$normalized), fig.cap="RNA-Seq PCA (VST-normalised)"}
+mat <- obj$rna$normalized
+pca <- prcomp(t(mat), scale. = FALSE)
+df  <- as.data.frame(pca$x[,1:2])
+df$sample <- rownames(df)
+pct <- round(summary(pca)$importance[2, 1:2] * 100, 1)
+if (!is.null(obj$results$groups)) df$Group <- obj$results$groups[df$sample]
+grp_col <- if ("Group" %in% colnames(df)) df$Group else NULL
+p <- ggplot(df, aes(PC1, PC2, label = sample)) +
+  geom_point(aes(color = grp_col), size = 3, alpha = 0.8) +
+  labs(x = paste0("PC1 (", pct[1], "%)"), y = paste0("PC2 (", pct[2], "%)"),
+       title = "RNA-Seq PCA", color = "Group") +
+  theme_minimal(base_size = 13)
+ggplotly(p)
+```
+
+---
+
+# 2. MOFA2 Integration {.tabset}
+
+```{r mofa-check, results='asis', eval=!has_mofa}
+cat("> **Note:** MOFA2 model not found. Run `omicslens_integrate()` to generate factors.\n")
+```
+
+## Variance Explained
+
+```{r var-exp, eval=has_mofa}
+ve  <- obj$results$mofa$variance_explained$r2_per_factor[[1]]
+df  <- as.data.frame(ve)
+df$Factor <- factor(paste0("F", seq_len(nrow(df))), levels = paste0("F", seq_len(nrow(df))))
+df_long <- tidyr::pivot_longer(df, -Factor, names_to = "View", values_to = "VarExp")
+ggplot(df_long, aes(Factor, VarExp, fill = View)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(y = "Variance Explained (%)", title = "Variance explained per factor per view") +
+  theme_minimal(base_size = 13) +
+  scale_fill_brewer(palette = "Set2")
+```
+
+## Factor Scatter
+
+```{r factor-scatter, eval=has_mofa, fig.cap="MOFA2 Factor 1 vs Factor 2"}
+omicslens_plot_factors(obj)
+```
+
+## Top Weights
+
+```{r weights, eval=has_mofa}
+for (view in names(obj$results$mofa$weights)) {
+  wraw <- obj$results$mofa$weights[[view]]
+  # Weights may be a matrix directly or a list-per-group
+  wmat <- if (is.matrix(wraw)) wraw else wraw[[1]]
+  vals <- sort(abs(wmat[, 1]), decreasing = TRUE)
+  top  <- head(vals, 20)
+  df   <- data.frame(Feature = names(top), AbsWeight = as.numeric(top))
+  df   <- df[order(df$AbsWeight), ]
+  df$Feature <- factor(df$Feature, levels = df$Feature)
+  p <- ggplot(df, aes(AbsWeight, Feature)) +
+    geom_bar(stat = "identity", fill = "#3498db") +
+    labs(x = "|Weight|", y = NULL,
+         title = paste("Top 20 feature weights — Factor 1 |", view)) +
+    theme_minimal(base_size = 11)
+  print(p)
+}
+```
+
+---
+
+# 3. Differential Expression {.tabset}
+
+```{r de-check, results='asis', eval=!has_de}
+cat("> **Note:** DE results not found. Run `omicslens_analyze()` first.\n")
+```
+
+## Volcano Plot
+
+```{r volcano, eval=has_de}
+ggplotly(omicslens_plot_de(obj))
+```
+
+## Heatmap
+
+```{r heatmap, eval=has_de && !is.null(obj$rna$normalized), fig.height=8}
+top30 <- head(obj$results$de$gene[!is.na(obj$results$de$padj)], 30)
+mat   <- t(scale(t(obj$rna$normalized[top30, ])))
+ann   <- if (!is.null(obj$results$groups)) data.frame(Group = obj$results$groups, row.names = names(obj$results$groups)) else NULL
+pheatmap::pheatmap(mat, annotation_col = ann, show_colnames = FALSE,
+                    color = colorRampPalette(c("#2166ac","white","#d73027"))(100),
+                    main = "Top 30 DE genes (row-scaled VST)")
+```
+
+## Results Table
+
+```{r de-table, eval=has_de}
+de_show <- obj$results$de[!is.na(obj$results$de$padj),
+                            c("gene","baseMean","log2FoldChange","pvalue","padj")]
+DT::datatable(de_show, rownames = FALSE, filter = "top",
+          options = list(pageLength = 15, scrollX = TRUE)) |>
+  DT::formatRound(c("baseMean","log2FoldChange","pvalue","padj"), 4) |>
+  DT::formatStyle("padj",
+              backgroundColor = DT::styleInterval(0.05, c("#abebc6","white")))
+```
+
+---
+
+# 4. Pathway Enrichment
+
+```{r gsea-check, results='asis', eval=!has_gsea}
+cat("> **Note:** GSEA results not found. Run `omicslens_analyze()` first.\n")
+```
+
+```{r gsea, eval=has_gsea, fig.height=8}
+omicslens_plot_gsea(obj, top_n = 20)
+```
+
+```{r gsea-table, eval=has_gsea}
+gsea_show <- as.data.frame(obj$results$gsea)[, c("pathway","NES","pval","padj","size")]
+DT::datatable(gsea_show, rownames = FALSE, filter = "top",
+          options = list(pageLength = 15, scrollX = TRUE)) |>
+  DT::formatRound(c("NES","pval","padj"), 4)
+```
+
+---
+
+# 5. Differentially Methylated Regions
+
+```{r dmr-check, results='asis', eval=!has_dmr}
+cat("> **Note:** DMR results not available. Run `omicslens_analyze()` with a methylation layer.\n")
+```
+
+```{r dmr, eval=has_dmr}
+DT::datatable(obj$results$dmr, rownames = FALSE,
+          options = list(pageLength = 15, scrollX = TRUE))
+```
+
+---
+
+# 6. Survival Analysis
+
+```{r surv-check, results='asis', eval=!has_survival}
+cat("> **Note:** Survival results not found. Provide `time_os` and `event` columns in metadata.\n")
+```
+
+```{r survival, eval=has_survival, fig.height=7}
+print(omicslens_plot_survival(obj))
+```
+
+```{r cox, eval=has_survival}
+cat("**Cox proportional hazards model summary:**\n\n")
+print(summary(obj$results$survival$cox))
+```
+
+---
+
+# Session Info
+
+```{r session}
+sessionInfo()
+```
+
+---
+
+*Generated by [OmicsLens](https://github.com/priyanshpathak/OmicsLens)*

@@ -15,7 +15,6 @@ and **DNA methylation** data into a single interpretable analysis. The core engi
 [MOFA2](https://biofam.github.io/MOFA2/) latent factor analysis; results are explored
 through an interactive **Shiny dashboard** and exported as a reproducible **HTML report**.
 
-No bioinformatics PhD required.
 
 ---
 

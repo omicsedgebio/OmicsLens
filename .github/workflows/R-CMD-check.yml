@@ -32,15 +32,22 @@ jobs:
           r-version: ${{ matrix.config.r }}
           use-public-rspm: true
 
+      - name: Install system libraries (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update -y && sudo apt-get install -y libhdf5-dev
+
+      - name: Install system libraries (macOS)
+        if: runner.os == 'macOS'
+        run: brew install hdf5 || true
+
       - name: Install BiocManager
-        run: |
-          install.packages("BiocManager")
+        run: install.packages("BiocManager")
         shell: Rscript {0}
 
       - name: Install Bioconductor dependencies
         run: |
           BiocManager::install(c("MOFA2", "DESeq2", "SummarizedExperiment",
-                                  "BiocParallel", "fgsea"),
+                                  "BiocParallel", "fgsea", "BiocStyle"),
                                 ask = FALSE, update = FALSE)
         shell: Rscript {0}
 
@@ -48,8 +55,11 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
+          dependencies: '"hard"'
 
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
           args: 'c("--no-manual", "--no-tests")'
+        env:
+          _R_CHECK_FORCE_SUGGESTS_: false

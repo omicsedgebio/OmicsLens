@@ -6,7 +6,7 @@
 
 [![R-CMD-check](https://github.com/omicsedgebio/OmicsLens/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/omicsedgebio/OmicsLens/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.md)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20346578.svg)](https://doi.org/10.5281/zenodo.20346578)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20348068.svg)](https://doi.org/10.5281/zenodo.20348068)
 
 ---
 
@@ -245,10 +245,30 @@ omicslens_report(obj, output_file = "report.html")       # HTML report
 ## Citation
 
 > Pathak, P. (2026). *OmicsLens: Multi-Omics Integration Pipeline with
-> Interactive Visualization* (v0.1.0). Zenodo. https://doi.org/10.5281/zenodo.20346578
+> Interactive Visualization* (v0.1.0). Zenodo. https://doi.org/10.5281/zenodo.20348068
 
 > Argelaguet R et al. (2020). MOFA+: a statistical framework for comprehensive integration
 > of multi-modal single-cell data. *Genome Biology*, 21:111.
+
+---
+
+## CRAN submission checklist
+
+Steps remaining before a first CRAN submission:
+
+- [x] `R CMD check` passes with 0 errors and 0 warnings on Linux and macOS
+- [x] All exported functions have `@examples` (wrapped in `\dontrun{}` where live data is needed)
+- [x] `DESCRIPTION` has valid `Title`, `Description`, `Authors@R`, `License`, `URL`, `BugReports`
+- [x] `LICENSE` stub is valid DCF (`YEAR` / `COPYRIGHT HOLDER`)
+- [x] No non-ASCII characters in R source files
+- [x] `NEWS.md` — not yet required for first submission but recommended
+- [ ] Run `rhub::rhub_check()` on at least one additional platform (Windows)
+- [ ] Run `urlchecker::url_check()` — verify all URLs in docs and README are live
+- [ ] Spell-check with `spelling::spell_check_package()`
+- [ ] Set `Version: 0.1.0` and confirm `Date` field is current
+- [ ] Add a `cran-comments.md` file documenting known NOTEs and test environment
+- [ ] Confirm Bioconductor dependencies (`MOFA2`, `DESeq2`, `fgsea`) install cleanly from Bioconductor on a fresh R session — note this in `cran-comments.md`
+- [ ] Submit via <https://cran.r-project.org/submit.html>
 
 ---
 

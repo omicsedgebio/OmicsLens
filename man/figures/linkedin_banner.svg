@@ -1,0 +1,238 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  <defs>
+    <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a6496"/>
+      <stop offset="100%" style="stop-color:#00897b"/>
+    </linearGradient>
+    <linearGradient id="hexGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#00897b"/>
+      <stop offset="100%" style="stop-color:#1a6496"/>
+    </linearGradient>
+    <linearGradient id="lensGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:0.95"/>
+      <stop offset="100%" style="stop-color:#b3e5fc;stop-opacity:0.85"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1a3a5c"/>
+      <stop offset="60%" style="stop-color:#1a6496"/>
+      <stop offset="100%" style="stop-color:#00897b"/>
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fdff"/>
+      <stop offset="100%" style="stop-color:#f0faf8"/>
+    </linearGradient>
+    <clipPath id="lensClip">
+      <circle cx="580" cy="490" r="155"/>
+    </clipPath>
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#1a6496" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="1200" fill="url(#bgGrad)"/>
+
+  <!-- Hexagon outer border -->
+  <polygon points="600,62 1012,300 1012,776 600,1014 188,776 188,300"
+           fill="none" stroke="url(#hexGrad)" stroke-width="7" opacity="0.85" filter="url(#softShadow)"/>
+  <!-- Hexagon inner guide -->
+  <polygon points="600,95 982,322 982,758 600,985 218,758 218,322"
+           fill="none" stroke="url(#hexGrad)" stroke-width="1.5" opacity="0.2"/>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- TOP-LEFT ICON: RNA-Seq Heatmap             -->
+  <!-- ═══════════════════════════════════════════ -->
+  <g transform="translate(278, 248)">
+    <text x="0" y="-18" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#1a6496" text-anchor="middle" font-weight="600">RNA-Seq</text>
+    <!-- 5x4 heatmap grid -->
+    <rect x="-52" y="0" width="22" height="22" rx="2" fill="#0d47a1"/>
+    <rect x="-28" y="0" width="22" height="22" rx="2" fill="#1565c0"/>
+    <rect x="-4" y="0" width="22" height="22" rx="2" fill="#42a5f5"/>
+    <rect x="20" y="0" width="22" height="22" rx="2" fill="#0d47a1"/>
+    <rect x="44" y="0" width="22" height="22" rx="2" fill="#1976d2"/>
+
+    <rect x="-52" y="25" width="22" height="22" rx="2" fill="#26c6da"/>
+    <rect x="-28" y="25" width="22" height="22" rx="2" fill="#1565c0"/>
+    <rect x="-4" y="25" width="22" height="22" rx="2" fill="#0d47a1"/>
+    <rect x="20" y="25" width="22" height="22" rx="2" fill="#26c6da"/>
+    <rect x="44" y="25" width="22" height="22" rx="2" fill="#42a5f5"/>
+
+    <rect x="-52" y="50" width="22" height="22" rx="2" fill="#1565c0"/>
+    <rect x="-28" y="50" width="22" height="22" rx="2" fill="#26c6da"/>
+    <rect x="-4" y="50" width="22" height="22" rx="2" fill="#1976d2"/>
+    <rect x="20" y="50" width="22" height="22" rx="2" fill="#0d47a1"/>
+    <rect x="44" y="50" width="22" height="22" rx="2" fill="#1565c0"/>
+
+    <rect x="-52" y="75" width="22" height="22" rx="2" fill="#42a5f5"/>
+    <rect x="-28" y="75" width="22" height="22" rx="2" fill="#0d47a1"/>
+    <rect x="-4" y="75" width="22" height="22" rx="2" fill="#26c6da"/>
+    <rect x="20" y="75" width="22" height="22" rx="2" fill="#1976d2"/>
+    <rect x="44" y="75" width="22" height="22" rx="2" fill="#0d47a1"/>
+  </g>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- TOP-RIGHT ICON: Volcano Plot               -->
+  <!-- ═══════════════════════════════════════════ -->
+  <g transform="translate(900, 248)">
+    <text x="0" y="-18" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#1a6496" text-anchor="middle" font-weight="600">DEG Analysis</text>
+    <!-- Axis -->
+    <line x1="-70" y1="100" x2="70" y2="100" stroke="#aaa" stroke-width="2"/>
+    <line x1="0" y1="100" x2="0" y2="0" stroke="#aaa" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <!-- Down-regulated (red, left) -->
+    <circle cx="-50" cy="40" r="7" fill="#e53935" opacity="0.85"/>
+    <circle cx="-38" cy="22" r="7" fill="#e53935" opacity="0.85"/>
+    <circle cx="-58" cy="28" r="6" fill="#e53935" opacity="0.75"/>
+    <circle cx="-42" cy="55" r="6" fill="#e53935" opacity="0.7"/>
+    <circle cx="-30" cy="48" r="5" fill="#e53935" opacity="0.65"/>
+    <!-- Up-regulated (blue, right) -->
+    <circle cx="45" cy="18" r="8" fill="#1565c0" opacity="0.85"/>
+    <circle cx="55" cy="35" r="7" fill="#1565c0" opacity="0.85"/>
+    <circle cx="35" cy="30" r="6" fill="#1565c0" opacity="0.75"/>
+    <circle cx="48" cy="52" r="5" fill="#1565c0" opacity="0.7"/>
+    <circle cx="60" cy="50" r="5" fill="#1565c0" opacity="0.65"/>
+    <!-- Non-significant (grey) -->
+    <circle cx="-12" cy="72" r="5" fill="#bbb" opacity="0.6"/>
+    <circle cx="0" cy="68" r="5" fill="#bbb" opacity="0.6"/>
+    <circle cx="12" cy="74" r="5" fill="#bbb" opacity="0.6"/>
+    <circle cx="-5" cy="82" r="4" fill="#bbb" opacity="0.5"/>
+    <circle cx="8" cy="80" r="4" fill="#bbb" opacity="0.5"/>
+    <!-- Axis labels -->
+    <text x="-70" y="118" font-family="Arial" font-size="14" fill="#888">-log₂FC</text>
+    <text x="30" y="118" font-family="Arial" font-size="14" fill="#888">+log₂FC</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CENTER: Magnifying glass with DNA helix    -->
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- Lens fill -->
+  <circle cx="580" cy="490" r="158" fill="url(#lensGrad)" filter="url(#softShadow)"/>
+
+  <!-- DNA strands inside lens -->
+  <!-- RNA strand (red) -->
+  <path d="M555 350 C560 372, 580 380, 585 402 C590 424, 568 432, 573 454 C578 476, 598 484, 603 506 C608 528, 586 536, 591 558 C596 580, 616 588, 621 610"
+        fill="none" stroke="#e53935" stroke-width="5" stroke-linecap="round" clip-path="url(#lensClip)"/>
+  <!-- Methylation strand (teal) -->
+  <path d="M615 350 C610 372, 590 380, 585 402 C580 424, 602 432, 597 454 C592 476, 572 484, 567 506 C562 528, 584 536, 579 558 C574 580, 554 588, 549 610"
+        fill="none" stroke="#00897b" stroke-width="5" stroke-linecap="round" clip-path="url(#lensClip)"/>
+  <!-- Rungs -->
+  <line x1="557" y1="363" x2="613" y2="363" stroke="white" stroke-width="3" opacity="0.75" clip-path="url(#lensClip)"/>
+  <line x1="559" y1="385" x2="611" y2="385" stroke="white" stroke-width="3" opacity="0.75" clip-path="url(#lensClip)"/>
+  <line x1="570" y1="407" x2="600" y2="407" stroke="white" stroke-width="3" opacity="0.75" clip-path="url(#lensClip)"/>
+  <line x1="572" y1="429" x2="598" y2="429" stroke="white" stroke-width="3" opacity="0.75" clip-path="url(#lensClip)"/>
+  <line x1="569" y1="451" x2="601" y2="451" stroke="white" stroke-width="3" opacity="0.75" clip-path="url(#lensClip)"/>
+  <line x1="561" y1="473" x2="609" y2="473" stroke="white" stroke-width="3" opacity="0.75" clip-path="url(#lensClip)"/>
+  <line x1="558" y1="495" x2="612" y2="495" stroke="white" stroke-width="3" opacity="0.75" clip-path="url(#lensClip)"/>
+  <line x1="561" y1="517" x2="609" y2="517" stroke="white" stroke-width="3" opacity="0.75" clip-path="url(#lensClip)"/>
+  <line x1="567" y1="539" x2="603" y2="539" stroke="white" stroke-width="3" opacity="0.75" clip-path="url(#lensClip)"/>
+  <line x1="561" y1="561" x2="609" y2="561" stroke="white" stroke-width="3" opacity="0.75" clip-path="url(#lensClip)"/>
+  <line x1="557" y1="583" x2="613" y2="583" stroke="white" stroke-width="3" opacity="0.75" clip-path="url(#lensClip)"/>
+  <line x1="554" y1="605" x2="616" y2="605" stroke="white" stroke-width="3" opacity="0.75" clip-path="url(#lensClip)"/>
+
+  <!-- Lens ring -->
+  <circle cx="580" cy="490" r="158" fill="none" stroke="url(#hexGrad)" stroke-width="14"/>
+  <!-- Lens highlight -->
+  <ellipse cx="530" cy="420" rx="32" ry="16" fill="white" opacity="0.18" transform="rotate(-35 530 420)"/>
+
+  <!-- Handle -->
+  <line x1="710" y1="620" x2="810" y2="720" stroke="#1a6496" stroke-width="28" stroke-linecap="round"/>
+  <line x1="710" y1="620" x2="810" y2="720" stroke="#90caf9" stroke-width="10" stroke-linecap="round" opacity="0.55"/>
+
+  <!-- WGS gold dots (upper right of lens) -->
+  <circle cx="720" cy="370" r="11" fill="#ffd54f" opacity="0.9"/>
+  <circle cx="748" cy="388" r="8"  fill="#ffd54f" opacity="0.7"/>
+  <circle cx="762" cy="360" r="6"  fill="#ffb300" opacity="0.8"/>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- MIDDLE-LEFT ICON: Methylation CpG          -->
+  <!-- ═══════════════════════════════════════════ -->
+  <g transform="translate(248, 530)">
+    <text x="0" y="-18" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#00897b" text-anchor="middle" font-weight="600">Methylation</text>
+    <!-- CpG dot grid -->
+    <circle cx="-42" cy="12" r="10" fill="#00897b" opacity="0.9"/>
+    <circle cx="-18" cy="12" r="10" fill="#00897b" opacity="0.6"/>
+    <circle cx="6" cy="12" r="10" fill="#b2dfdb" opacity="0.7"/>
+    <circle cx="30" cy="12" r="10" fill="#00897b" opacity="0.9"/>
+    <circle cx="-42" cy="36" r="10" fill="#b2dfdb" opacity="0.6"/>
+    <circle cx="-18" cy="36" r="10" fill="#00897b" opacity="0.9"/>
+    <circle cx="6" cy="36" r="10" fill="#00897b" opacity="0.8"/>
+    <circle cx="30" cy="36" r="10" fill="#b2dfdb" opacity="0.5"/>
+    <circle cx="-42" cy="60" r="10" fill="#00897b" opacity="0.8"/>
+    <circle cx="-18" cy="60" r="10" fill="#b2dfdb" opacity="0.5"/>
+    <circle cx="6" cy="60" r="10" fill="#00897b" opacity="0.9"/>
+    <circle cx="30" cy="60" r="10" fill="#00897b" opacity="0.7"/>
+    <text x="-6" y="90" font-family="Arial" font-size="14" fill="#888" text-anchor="middle">CpG sites</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- MIDDLE-RIGHT ICON: MOFA2 factor scatter    -->
+  <!-- ═══════════════════════════════════════════ -->
+  <g transform="translate(940, 530)">
+    <text x="0" y="-18" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#1a6496" text-anchor="middle" font-weight="600">MOFA2 Factors</text>
+    <!-- Two clusters -->
+    <circle cx="-40" cy="25" r="8" fill="#e53935" opacity="0.85"/>
+    <circle cx="-28" cy="42" r="7" fill="#e53935" opacity="0.8"/>
+    <circle cx="-48" cy="48" r="7" fill="#e53935" opacity="0.75"/>
+    <circle cx="-35" cy="62" r="6" fill="#e53935" opacity="0.7"/>
+    <circle cx="-20" cy="55" r="6" fill="#e53935" opacity="0.7"/>
+    <circle cx="22" cy="20" r="8" fill="#1565c0" opacity="0.85"/>
+    <circle cx="36" cy="32" r="7" fill="#1565c0" opacity="0.8"/>
+    <circle cx="18" cy="40" r="7" fill="#1565c0" opacity="0.75"/>
+    <circle cx="30" cy="52" r="6" fill="#1565c0" opacity="0.7"/>
+    <circle cx="44" cy="44" r="6" fill="#1565c0" opacity="0.7"/>
+    <!-- Axes -->
+    <line x1="-58" y1="78" x2="58" y2="78" stroke="#aaa" stroke-width="2"/>
+    <line x1="-58" y1="78" x2="-58" y2="10" stroke="#aaa" stroke-width="2"/>
+    <text x="0" y="96" font-family="Arial" font-size="14" fill="#888" text-anchor="middle">Factor 1</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- BOTTOM-LEFT ICON: GSEA pathway bars        -->
+  <!-- ═══════════════════════════════════════════ -->
+  <g transform="translate(296, 778)">
+    <text x="0" y="-18" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#1a6496" text-anchor="middle" font-weight="600">GSEA Pathways</text>
+    <!-- Horizontal bar chart -->
+    <line x1="-8" y1="0" x2="-8" y2="110" stroke="#aaa" stroke-width="2"/>
+    <rect x="-6" y="4"  width="100" height="16" fill="#e53935" rx="3" opacity="0.85"/>
+    <rect x="-6" y="24" width="76"  height="16" fill="#e53935" rx="3" opacity="0.75"/>
+    <rect x="-6" y="44" width="55"  height="16" fill="#e53935" rx="3" opacity="0.65"/>
+    <rect x="-6" y="64" width="84"  height="16" fill="#1565c0" rx="3" opacity="0.75"/>
+    <rect x="-6" y="84" width="62"  height="16" fill="#1565c0" rx="3" opacity="0.85"/>
+  </g>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- BOTTOM-RIGHT ICON: Kaplan-Meier curve      -->
+  <!-- ═══════════════════════════════════════════ -->
+  <g transform="translate(890, 778)">
+    <text x="0" y="-18" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#1a6496" text-anchor="middle" font-weight="600">Survival Analysis</text>
+    <!-- KM step curves -->
+    <polyline points="-68,6 -48,6 -48,18 -28,18 -28,30 -8,30 -8,46 12,46 12,64 32,64 32,86 52,86 52,100 72,100"
+              fill="none" stroke="#e53935" stroke-width="4" stroke-linejoin="miter"/>
+    <polyline points="-68,6 -48,6 -48,12 -28,12 -28,20 -8,20 -8,28 12,28 12,38 32,38 32,48 52,48 52,56 72,56"
+              fill="none" stroke="#1565c0" stroke-width="4" stroke-linejoin="miter"/>
+    <!-- Axes -->
+    <line x1="-70" y1="108" x2="74" y2="108" stroke="#aaa" stroke-width="2"/>
+    <line x1="-70" y1="108" x2="-70" y2="4"  stroke="#aaa" stroke-width="2"/>
+    <text x="0" y="126" font-family="Arial" font-size="14" fill="#888" text-anchor="middle">Time (days)</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PACKAGE NAME + SUBTITLE                    -->
+  <!-- ═══════════════════════════════════════════ -->
+  <text x="600" y="980" font-family="Arial Black, Arial, sans-serif" font-size="110"
+        font-weight="900" fill="url(#textGrad)" text-anchor="middle" letter-spacing="3">OmicsLens</text>
+
+  <text x="600" y="1030" font-family="Arial, Helvetica, sans-serif" font-size="28"
+        fill="#444" text-anchor="middle" letter-spacing="1">Multi-Omics Integration Pipeline with Interactive Visualization</text>
+
+  <text x="600" y="1068" font-family="Arial, Helvetica, sans-serif" font-size="22"
+        fill="#00897b" text-anchor="middle" letter-spacing="2" font-weight="600">RNA-Seq  ·  WGS  ·  DNA Methylation  ·  MOFA2</text>
+
+  <!-- Decorative rule -->
+  <line x1="390" y1="1088" x2="810" y2="1088" stroke="url(#hexGrad)" stroke-width="2.5" opacity="0.5"/>
+  <circle cx="600" cy="1088" r="5" fill="url(#hexGrad)" opacity="0.8"/>
+
+  <!-- Version + badge -->
+  <rect x="500" y="1102" width="200" height="36" rx="18" fill="url(#hexGrad)" opacity="0.12"/>
+  <text x="600" y="1126" font-family="Arial, Helvetica, sans-serif" font-size="20"
+        fill="#1a6496" text-anchor="middle" font-weight="700">v0.1.0  ·  R Package</text>
+</svg>

@@ -51,7 +51,8 @@ Suggests:
     org.Hs.eg.db,
     maftools,
     survminer,
-    reticulate
+    reticulate,
+    survMisc
 biocViews: MultipleComparison, RNASeq, Methylation, Sequencing,
     GeneExpression, DifferentialExpression, Survival, Visualization,
     ShinyApps, WorkflowStep, ImmunoOncology

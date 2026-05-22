@@ -29,7 +29,7 @@ an interactive Shiny dashboard and a reproducible HTML report.
 \preformatted{
 # From GitHub (recommended for latest version):
 # install.packages("devtools")
-devtools::install_github("priyanshpathak/OmicsLens")
+devtools::install_github("omicsedgebio/OmicsLens")
 
 # Bioconductor dependencies must be installed first:
 # if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -46,8 +46,9 @@ comprehensive integration of multi-modal single-cell data.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/priyansh-22/OmicsLens}
-  \item Report bugs at \url{https://github.com/priyansh-22/OmicsLens/issues}
+  \item \url{https://github.com/omicsedgebio/OmicsLens}
+  \item \doi{10.5281/zenodo.20346578}
+  \item Report bugs at \url{https://github.com/omicsedgebio/OmicsLens/issues}
 }
 
 }

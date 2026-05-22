@@ -21,7 +21,7 @@
 #' \preformatted{
 #' # From GitHub (recommended for latest version):
 #' # install.packages("devtools")
-#' devtools::install_github("priyanshpathak/OmicsLens")
+#' devtools::install_github("omicsedgebio/OmicsLens")
 #'
 #' # Bioconductor dependencies must be installed first:
 #' # if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -37,3 +37,13 @@
 #'
 #' @keywords internal
 "_PACKAGE"
+
+# Suppress R CMD check NOTEs for ggplot2 column name references in aes()
+utils::globalVariables(c(
+  "PC1", "PC2", "Group", "Sample",
+  "Factor", "VarExp", "View",
+  "Weight", "Feature", "Direction",
+  "log2FoldChange", "log10p", "Sig",
+  "NES", "pathway", "size", "padj",
+  "AbsWeight", "grp_col"
+))

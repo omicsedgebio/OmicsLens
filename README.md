@@ -163,4 +163,4 @@ Issues and pull requests are welcome at
 
 ## License
 
-MIT © 2026 Priyansh Pathak
+MIT — see [LICENSE.md](LICENSE.md)

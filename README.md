@@ -2,7 +2,7 @@
 
 > **Multi-omics integration and visualization for translational research**
 
-[![R-CMD-check](https://github.com/priyanshpathak/OmicsLens/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/priyanshpathak/OmicsLens/actions)
+[![R-CMD-check](https://github.com/omicsedgebio/OmicsLens/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/omicsedgebio/OmicsLens/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.placeholder.svg)](https://doi.org/10.5281/zenodo.placeholder)
 
@@ -16,6 +16,14 @@ results are explored through an interactive **Shiny dashboard** and
 exported as a reproducible **HTML report**.
 
 No bioinformatics PhD required.
+
+---
+
+## Package architecture
+
+<p align="center">
+  <img src="man/figures/architecture.svg" width="100%" alt="OmicsLens architecture diagram"/>
+</p>
 
 ---
 
@@ -37,11 +45,11 @@ No bioinformatics PhD required.
 # 1. Install Bioconductor dependencies
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
-BiocManager::install(c("MOFA2", "DESeq2", "fgsea", "DMRcate"))
+BiocManager::install(c("MOFA2", "DESeq2", "fgsea"))
 
 # 2. Install OmicsLens from GitHub
 # install.packages("devtools")
-devtools::install_github("priyanshpathak/OmicsLens")
+devtools::install_github("omicsedgebio/OmicsLens")
 ```
 
 ---
@@ -109,12 +117,12 @@ omicslens_integrate()
   └─ MOFA2 latent factor analysis (Gaussian + Bernoulli likelihoods)
 
 omicslens_analyze()
-  ├─ DESeq2     : differential expression (factor High vs Low)
-  ├─ fgsea      : hallmark pathway enrichment
-  ├─ DMRcate    : differentially methylated regions
-  └─ survival   : Kaplan-Meier + Cox regression
+  ├─ DESeq2  : differential expression (factor High vs Low)
+  ├─ fgsea   : hallmark pathway enrichment
+  ├─ t-test  : differentially methylated CpGs (DMRcate if available)
+  └─ survival: Kaplan-Meier + Cox regression
 
-omicslens_app()        → Shiny dashboard (7 tabs, plotly, DT, downloads)
+omicslens_app()        → Shiny dashboard (7 tabs, ggplot2, DT, downloads)
 omicslens_report()     → parameterised R Markdown HTML report
 ```
 
@@ -122,13 +130,13 @@ omicslens_report()     → parameterised R Markdown HTML report
 
 ## Shiny dashboard tabs
 
-1. **Overview** — data dimensions, PCA of RNA-Seq layer  
-2. **MOFA2 Factors** — variance explained, factor scatter, top weights  
-3. **Differential Expression** — volcano plot, heatmap, sortable table  
-4. **Pathway Enrichment** — GSEA dot plot, results table  
-5. **Methylation / DMR** — DMR table with genomic coordinates  
-6. **Survival** — Kaplan-Meier curves with risk table, Cox summary  
-7. **Export** — download CSVs for every result; generate HTML report  
+1. **Overview** — data dimensions, PCA of RNA-Seq layer
+2. **MOFA2 Factors** — variance explained, factor scatter, top weights
+3. **Differential Expression** — volcano plot, heatmap, sortable table
+4. **Pathway Enrichment** — GSEA dot plot, results table
+5. **Methylation / DMR** — differentially methylated CpGs table
+6. **Survival** — Kaplan-Meier curves, Cox regression summary
+7. **Export** — download CSVs for every result; generate HTML report
 
 ---
 
@@ -149,7 +157,7 @@ Please also cite MOFA2:
 ## Contributing
 
 Issues and pull requests are welcome at
-<https://github.com/priyanshpathak/OmicsLens/issues>.
+<https://github.com/omicsedgebio/OmicsLens/issues>.
 
 ---
 

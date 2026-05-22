@@ -1,11 +1,10 @@
 {
   "title": "OmicsLens: Multi-Omics Integration Pipeline with Interactive Visualization",
+  "version": "0.1.0",
   "description": "An R package providing an end-to-end pipeline for integrating RNA-Seq, whole-genome sequencing (WGS), and DNA methylation data through MOFA2 latent factor analysis. Includes differential expression, pathway enrichment, DMR calling, survival analysis, a Shiny dashboard, and HTML reports.",
   "creators": [
     {
-      "name": "Pathak, Priyansh",
-      "affiliation": "",
-      "orcid": "0000-0000-0000-0000"
+      "name": "Pathak, Priyansh"
     }
   ],
   "keywords": [

@@ -1,27 +1,50 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="OmicsLens logo">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#1a6496;stop-opacity:1"/>
-      <stop offset="100%" style="stop-color:#2c3e50;stop-opacity:1"/>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1565c0"/>
+      <stop offset="100%" style="stop-color:#0d2137"/>
     </linearGradient>
-    <linearGradient id="lens" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#aed6f1;stop-opacity:0.9"/>
-      <stop offset="100%" style="stop-color:#5dade2;stop-opacity:0.7"/>
+    <linearGradient id="lensGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:0.92"/>
+      <stop offset="100%" style="stop-color:#90caf9;stop-opacity:0.75"/>
     </linearGradient>
+    <clipPath id="lensClip">
+      <circle cx="47" cy="47" r="28"/>
+    </clipPath>
   </defs>
+
   <!-- Background circle -->
-  <circle cx="50" cy="50" r="48" fill="url(#bg)"/>
+  <circle cx="60" cy="60" r="58" fill="url(#bgGrad)"/>
+
+  <!-- Lens glass fill -->
+  <circle cx="47" cy="47" r="28" fill="url(#lensGrad)"/>
+
+  <!-- DNA double helix inside lens -->
+  <!-- Left strand (red/pink — RNA) -->
+  <path d="M36 30 C38 34, 44 36, 46 40 C48 44, 42 46, 44 50 C46 54, 52 56, 54 60 C56 64, 50 66, 52 70"
+        fill="none" stroke="#e53935" stroke-width="2.2" stroke-linecap="round" clip-path="url(#lensClip)"/>
+  <!-- Right strand (teal — methylation) -->
+  <path d="M58 30 C56 34, 50 36, 48 40 C46 44, 52 46, 50 50 C48 54, 42 56, 40 60 C38 64, 44 66, 42 70"
+        fill="none" stroke="#00897b" stroke-width="2.2" stroke-linecap="round" clip-path="url(#lensClip)"/>
+  <!-- Rungs (white — integration bridges) -->
+  <line x1="37" y1="33" x2="57" y2="33" stroke="white" stroke-width="1.4" stroke-linecap="round" opacity="0.7" clip-path="url(#lensClip)"/>
+  <line x1="39" y1="40" x2="55" y2="40" stroke="white" stroke-width="1.4" stroke-linecap="round" opacity="0.7" clip-path="url(#lensClip)"/>
+  <line x1="43" y1="47" x2="51" y2="47" stroke="white" stroke-width="1.4" stroke-linecap="round" opacity="0.7" clip-path="url(#lensClip)"/>
+  <line x1="41" y1="54" x2="53" y2="54" stroke="white" stroke-width="1.4" stroke-linecap="round" opacity="0.7" clip-path="url(#lensClip)"/>
+  <line x1="38" y1="61" x2="56" y2="61" stroke="white" stroke-width="1.4" stroke-linecap="round" opacity="0.7" clip-path="url(#lensClip)"/>
+
   <!-- Lens outer ring -->
-  <circle cx="44" cy="44" r="26" fill="none" stroke="white" stroke-width="5" opacity="0.95"/>
-  <!-- Lens inner fill -->
-  <circle cx="44" cy="44" r="21" fill="url(#lens)" opacity="0.5"/>
-  <!-- Lens shine -->
-  <circle cx="37" cy="37" r="6" fill="white" opacity="0.25"/>
+  <circle cx="47" cy="47" r="28" fill="none" stroke="white" stroke-width="4.5" opacity="0.92"/>
+  <!-- Lens shine highlight -->
+  <ellipse cx="38" cy="36" rx="6" ry="3.5" fill="white" opacity="0.22" transform="rotate(-35 38 36)"/>
+
   <!-- Handle -->
-  <line x1="63" y1="63" x2="80" y2="80" stroke="white" stroke-width="6" stroke-linecap="round"/>
-  <!-- DNA helix dots suggesting omics -->
-  <circle cx="72" cy="22" r="3" fill="white" opacity="0.7"/>
-  <circle cx="78" cy="30" r="2" fill="white" opacity="0.5"/>
-  <circle cx="68" cy="30" r="2" fill="white" opacity="0.5"/>
-  <circle cx="76" cy="38" r="3" fill="white" opacity="0.7"/>
+  <line x1="68" y1="68" x2="90" y2="90" stroke="white" stroke-width="9" stroke-linecap="round" opacity="0.95"/>
+  <!-- Handle sheen -->
+  <line x1="68" y1="68" x2="90" y2="90" stroke="#90caf9" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+
+  <!-- Small omics data dots outside lens (WGS layer) -->
+  <circle cx="88" cy="28" r="3.5" fill="#ffd54f" opacity="0.85"/>
+  <circle cx="96" cy="38" r="2.5" fill="#ffd54f" opacity="0.6"/>
+  <circle cx="100" cy="50" r="2" fill="#ffd54f" opacity="0.4"/>
 </svg>

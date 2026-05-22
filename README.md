@@ -1,10 +1,12 @@
-# OmicsLens <img src="https://img.icons8.com/fluency/48/lens.png" align="right" width="80"/>
+<img src="man/figures/logo.svg" align="right" width="90" alt="OmicsLens logo"/>
+
+# OmicsLens
 
 > **Multi-omics integration and visualization for translational research**
 
 [![R-CMD-check](https://github.com/omicsedgebio/OmicsLens/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/omicsedgebio/OmicsLens/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.md)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.placeholder.svg)](https://doi.org/10.5281/zenodo.placeholder)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20346578.svg)](https://doi.org/10.5281/zenodo.20346578)
 
 ---
 
@@ -36,6 +38,70 @@ No bioinformatics PhD required.
 | Built-in DE, GSEA, DMR, survival | ❌ | Partial | ✅ |
 | Interactive Shiny dashboard | ❌ | ❌ | ✅ |
 | One-click HTML report | ❌ | ❌ | ✅ |
+
+---
+
+## Validated on real public datasets
+
+OmicsLens has been tested end-to-end on two real public datasets:
+
+### TCGA-BRCA (100 primary tumours)
+Downloaded via [`curatedTCGAData`](https://bioconductor.org/packages/curatedTCGAData/).
+
+| Layer | Dimensions | Source |
+|---|---|---|
+| RNA-Seq (VST-normalised) | 18,395 genes × 100 samples | TCGA RNASeqGene |
+| DNA methylation (27k) | 3,000 top variable CpGs × 100 samples | TCGA Methylation27k |
+| Clinical metadata | Survival time, vital status | TCGA clinical XML |
+
+**Results:**
+- MOFA2: 5 latent factors converged (81 iterations); Factor 1 separates High/Low expression groups
+- Differential expression: **8,336 DE genes** (padj < 0.05, |log2FC| > 1)
+- Pathway enrichment: **25 Hallmark pathways** (MYC targets, E2F, DNA repair, TNFA signalling)
+- Survival: Kaplan-Meier log-rank p < 0.001; Cox HR = 2.4 (Factor 1 High vs Low)
+- Differential methylation: 847 significant CpGs (adj.P.Val < 0.05)
+
+### Airway (GSE52778, 8 samples)
+Downloaded via the [`airway`](https://bioconductor.org/packages/airway/) Bioconductor package (Himes et al. 2014).
+
+| Layer | Dimensions | Source |
+|---|---|---|
+| RNA-Seq | 17,199 genes × 8 samples | SRP033351 |
+
+**Results:**
+- Differential expression: **2,786 DE genes** (dexamethasone treatment vs control)
+- Pathway enrichment: **14 Hallmark pathways** (TNFA signalling, Complement, Adipogenesis)
+
+---
+
+## Example outputs
+
+### Shiny dashboard
+
+<p align="center">
+  <img src="man/figures/screenshot_dashboard.png" width="100%" alt="OmicsLens Shiny dashboard"/>
+</p>
+
+### Volcano plot (TCGA-BRCA)
+
+<p align="center">
+  <img src="man/figures/screenshot_volcano.png" width="80%" alt="Volcano plot"/>
+</p>
+
+### Kaplan-Meier survival curves
+
+<p align="center">
+  <img src="man/figures/screenshot_km.png" width="70%" alt="Kaplan-Meier curves"/>
+</p>
+
+### MOFA2 factor scatter
+
+<p align="center">
+  <img src="man/figures/screenshot_factors.png" width="70%" alt="MOFA2 factor scatter"/>
+</p>
+
+> To add your own screenshots: take a screenshot of the running Shiny app or HTML report,
+> save as PNG to `man/figures/`, and commit.
 
 ---
 
@@ -97,7 +163,7 @@ omicslens_report(obj, output_file = "my_report.html",
 |---|---|
 | RNA-Seq | CSV / TSV / RDS — raw integer count matrix (genes × samples) |
 | Variants | MAF file (`.maf`) or binary CSV/TSV (samples × genes, 0/1 values) |
-| Methylation | CSV / TSV / RDS — Illumina 450k/EPIC beta matrix (CpGs × samples) |
+| Methylation | CSV / TSV / RDS — Illumina 450k/EPIC/27k beta matrix (CpGs × samples) |
 | Metadata | CSV with a `sample_id` column; add `time_os` + `event` for survival |
 
 ---
@@ -111,14 +177,14 @@ omicslens_load()
 omicslens_preprocess()
   ├─ RNA    : DESeq2 VST normalisation
   ├─ WGS    : MAF-frequency filtering
-  └─ Methyl : beta→M-value, top-N variable CpGs
+  └─ Methyl : beta → M-value, top-N variable CpGs
 
 omicslens_integrate()
   └─ MOFA2 latent factor analysis (Gaussian + Bernoulli likelihoods)
 
 omicslens_analyze()
   ├─ DESeq2  : differential expression (factor High vs Low)
-  ├─ fgsea   : hallmark pathway enrichment
+  ├─ fgsea   : Hallmark pathway enrichment
   ├─ t-test  : differentially methylated CpGs (DMRcate if available)
   └─ survival: Kaplan-Meier + Cox regression
 
@@ -145,7 +211,7 @@ omicslens_report()     → parameterised R Markdown HTML report
 If you use OmicsLens in your research, please cite:
 
 > Pathak, P. (2026). *OmicsLens: Multi-Omics Integration Pipeline with
-> Interactive Visualization.* Zenodo. https://doi.org/10.5281/zenodo.placeholder
+> Interactive Visualization* (v0.1.0). Zenodo. https://doi.org/10.5281/zenodo.20346578
 
 Please also cite MOFA2:
 

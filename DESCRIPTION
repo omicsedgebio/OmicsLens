@@ -62,5 +62,5 @@ biocViews: MultipleComparison, RNASeq, Methylation, Sequencing,
     ShinyApps, WorkflowStep, ImmunoOncology
 VignetteBuilder: knitr
 BugReports: https://github.com/omicsedgebio/OmicsLens/issues
-URL: https://github.com/omicsedgebio/OmicsLens
+URL: https://github.com/omicsedgebio/OmicsLens, https://doi.org/10.5281/zenodo.20346578
 Config/testthat/edition: 3

@@ -16,9 +16,9 @@
 #'   with fewer than \code{rna_min_counts} counts in at least
 #'   \code{rna_min_samples} samples are removed (default \code{10}).
 #' @param rna_min_samples Minimum number of samples that must exceed
-#'   \code{rna_min_counts}. Defaults to 10% of samples (minimum 2).
+#'   \code{rna_min_counts}. Defaults to 10\% of samples (minimum 2).
 #' @param variant_min_maf Minimum mutation frequency (proportion of samples)
-#'   for a gene to be retained in the variant layer. Default \code{0.05} (5%).
+#'   for a gene to be retained in the variant layer. Default \code{0.05} (5\%).
 #' @param meth_max_na_frac Maximum fraction of missing values allowed per CpG
 #'   site before the site is discarded (default \code{0.2}).
 #' @param meth_var_top_n Number of most-variable CpG sites to retain for
@@ -84,7 +84,10 @@ omicslens_preprocess <- function(obj,
       design    = ~1            # intercept-only; purely for normalisation
     )
     dds <- DESeq2::estimateSizeFactors(dds)
-    vst  <- DESeq2::vst(dds, blind = TRUE)
+    vst <- tryCatch(
+      DESeq2::vst(dds, blind = TRUE),
+      error = function(e) DESeq2::varianceStabilizingTransformation(dds, blind = TRUE)
+    )
     vst_mat <- SummarizedExperiment::assay(vst)
 
     obj$rna$counts     <- counts

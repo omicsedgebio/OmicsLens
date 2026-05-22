@@ -1,4 +1,4 @@
-# ── Internal helpers ──────────────────────────────────────────────────────────
+# -- Internal helpers ----------------------------------------------------------
 
 `%||%` <- function(a, b) if (!is.null(a)) a else b
 
@@ -81,7 +81,7 @@
   bin
 }
 
-# ── DESeq2 internal wrapper ────────────────────────────────────────────────────
+# -- DESeq2 internal wrapper ----------------------------------------------------
 .run_deseq2 <- function(obj, groups) {
   if (!requireNamespace("DESeq2", quietly = TRUE))
     stop("DESeq2 is required. Install via BiocManager::install('DESeq2').",
@@ -113,7 +113,7 @@
   res_df[order(res_df$padj, na.last = TRUE), ]
 }
 
-# ── fgsea internal wrapper ─────────────────────────────────────────────────────
+# -- fgsea internal wrapper -----------------------------------------------------
 .run_gsea <- function(de_res, organism = "human") {
   if (!requireNamespace("fgsea", quietly = TRUE))
     stop("fgsea is required. Install via BiocManager::install('fgsea').",
@@ -161,7 +161,7 @@
   )
 }
 
-# ── DMRcate internal wrapper ───────────────────────────────────────────────────
+# -- DMRcate internal wrapper ---------------------------------------------------
 .run_dmr <- function(obj, groups) {
   m_vals <- obj$methylation$m_values
   common <- intersect(colnames(m_vals), names(groups))
@@ -221,7 +221,7 @@
   if (nrow(sig) > 0) sig else utils::head(out, 50)
 }
 
-# ── Survival internal wrapper ─────────────────────────────────────────────────
+# -- Survival internal wrapper -------------------------------------------------
 .run_survival <- function(metadata, groups, time_col, event_col) {
   if (!requireNamespace("survival", quietly = TRUE))
     stop("survival package is required.", call. = FALSE)
@@ -237,27 +237,27 @@
   list(fit = fit, cox = cox, data = df)
 }
 
-# ── S3 methods ────────────────────────────────────────────────────────────────
+# -- S3 methods ----------------------------------------------------------------
 
 #' Print an OmicsLens object
 #' @param x An OmicsLens object.
 #' @param ... Ignored.
 #' @export
 print.OmicsLens <- function(x, ...) {
-  cat("── OmicsLens object ────────────────────────────────────────\n")
+  cat("-- OmicsLens object ----------------------------------------\n")
   layers <- x$layers_present
   if (length(layers) == 0) {
     cat("  No layers loaded.\n")
     return(invisible(x))
   }
   cat(sprintf("  Layers (%d): %s\n", length(layers), paste(layers, collapse = ", ")))
-  if (!is.null(x$rna))         cat(sprintf("  RNA        : %d genes × %d samples\n",
+  if (!is.null(x$rna))         cat(sprintf("  RNA        : %d genes x %d samples\n",
                                              nrow(x$rna$counts), ncol(x$rna$counts)))
-  if (!is.null(x$variants))    cat(sprintf("  Variants   : %d samples × %d genes\n",
+  if (!is.null(x$variants))    cat(sprintf("  Variants   : %d samples x %d genes\n",
                                              nrow(x$variants$binary), ncol(x$variants$binary)))
-  if (!is.null(x$methylation)) cat(sprintf("  Methylation: %d CpGs × %d samples\n",
+  if (!is.null(x$methylation)) cat(sprintf("  Methylation: %d CpGs x %d samples\n",
                                              nrow(x$methylation$beta), ncol(x$methylation$beta)))
-  if (!is.null(x$metadata))    cat(sprintf("  Metadata   : %d samples × %d columns\n",
+  if (!is.null(x$metadata))    cat(sprintf("  Metadata   : %d samples x %d columns\n",
                                              nrow(x$metadata), ncol(x$metadata)))
   if (!is.null(x$mofa_model)) {
     nf <- ncol(x$results$mofa$factors)
@@ -268,7 +268,7 @@ print.OmicsLens <- function(x, ...) {
   res_names <- names(x$results)[names(x$results) != "mofa"]
   if (length(res_names) > 0)
     cat(sprintf("  Results    : %s\n", paste(res_names, collapse = ", ")))
-  cat("────────────────────────────────────────────────────────────\n")
+  cat("------------------------------------------------------------\n")
   invisible(x)
 }
 

@@ -22,10 +22,10 @@ with fewer than \code{rna_min_counts} counts in at least
 \code{rna_min_samples} samples are removed (default \code{10}).}
 
 \item{rna_min_samples}{Minimum number of samples that must exceed
-\code{rna_min_counts}. Defaults to 10% of samples (minimum 2).}
+\code{rna_min_counts}. Defaults to 10\% of samples (minimum 2).}
 
 \item{variant_min_maf}{Minimum mutation frequency (proportion of samples)
-for a gene to be retained in the variant layer. Default \code{0.05} (5%).}
+for a gene to be retained in the variant layer. Default \code{0.05} (5\%).}
 
 \item{meth_max_na_frac}{Maximum fraction of missing values allowed per CpG
 site before the site is discarded (default \code{0.2}).}

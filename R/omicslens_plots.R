@@ -135,7 +135,7 @@ omicslens_plot_survival <- function(obj) {
        xlab    = "Time",
        ylab    = "Survival probability",
        main    = "Kaplan-Meier: MOFA Factor High vs Low")
-  legend("topright",
+  graphics::legend("topright",
          legend = levels(surv_res$data$mofa_group),
          col    = c("#e74c3c", "#3498db"),
          lwd    = 2, bty = "n")

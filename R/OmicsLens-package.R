@@ -45,5 +45,6 @@ utils::globalVariables(c(
   "Weight", "Feature", "Direction",
   "log2FoldChange", "log10p", "Sig",
   "NES", "pathway", "size", "padj",
-  "AbsWeight", "grp_col"
+  "AbsWeight", "grp_col",
+  ".data", "Color", "label"
 ))

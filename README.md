@@ -260,4 +260,4 @@ Issues and PRs welcome at <https://github.com/omicsedgebio/OmicsLens/issues>.
 
 ## License
 
-MIT — see [LICENSE.md](LICENSE.md)
+MIT — Copyright (c) 2026 Priyansh Pathak, OmicEdgeBio

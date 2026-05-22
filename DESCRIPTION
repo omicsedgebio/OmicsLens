@@ -5,8 +5,7 @@ Version: 0.1.0
 Date: 2026-05-20
 Authors@R: person("Priyansh", "Pathak",
     email = "priyanshpt84@gmail.com",
-    role  = c("aut", "cre"),
-    comment = c(ORCID = "0000-0000-0000-0000"))
+    role  = c("aut", "cre"))
 Description: An end-to-end multi-omics integration pipeline that combines
     RNA-Seq, whole-genome sequencing (WGS), and DNA methylation data through
     MOFA2 latent factor analysis. OmicsLens provides an accessible interface
@@ -27,18 +26,14 @@ Imports:
     MOFA2,
     DESeq2,
     SummarizedExperiment,
-    BiocParallel,
     fgsea,
     survival,
     ggplot2 (>= 3.4.0),
-    dplyr (>= 1.1.0),
     tidyr (>= 1.3.0),
     shiny (>= 1.7.0),
     shinydashboard (>= 0.7.0),
-    plotly (>= 4.10.0),
     DT (>= 0.27),
     rmarkdown (>= 2.20),
-    reshape2,
     pheatmap,
     methods,
     stats,
